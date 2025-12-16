@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lab4-testing"
+version = "0.1.0"
+description = "Лабораторная работа №4: Тестирование бэкенд приложения"
+authors = [
+    {name = "Иванов Иван", email = "ivanov@university.edu"}
+]
+requires-python = ">=3.9"
+
+dependencies = [
+    "litestar>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.0.0",
+    "asyncpg>=0.29.0",
+    "aiosqlite>=0.20.0",
+    "pydantic>=2.0.0",
+    "email-validator>=2.0.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "polyfactory>=2.0.0",
+]
+
+# Указываем как находить пакеты - ЭТО ВАЖНО!
+[tool.setuptools.packages.find]
+where = ["."]  # искать в текущей директории
+include = ["app*"]  # включать пакеты начинающиеся на 'app'
+exclude = ["tests*", "migrations*"]  # исключить тесты и миграции
+
+# Другой вариант - явное указание пакетов:
+# [tool.setuptools]
+# packages = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "--verbose --color=yes"
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
